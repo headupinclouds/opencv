@@ -35,8 +35,10 @@ set(headers_list "HEADERS")
 set(sources_list "SOURCES")
 set(link_deps "")
 foreach(m ${OPENCV_MODULE_${the_module}_DEPS})
+  if(OPENCV_MODULE_${m}_IS_PART_OF_WORLD)
   set(headers_list "${headers_list};${OPENCV_MODULE_${m}_HEADERS}")
   set(sources_list "${sources_list};${OPENCV_MODULE_${m}_SOURCES}")
+  endif()
   set(link_deps "${link_deps};${OPENCV_MODULE_${m}_LINK_DEPS}")
 endforeach()
 
@@ -68,11 +70,11 @@ if(IOS OR APPLE)
   endmacro()
 
   if(WITH_PNG)
-    ios_include_3party_libs( ${ZLIB_LIBRARIES} ${PNG_LIBRARIES} ) ## zlib libpng
+    ios_include_3party_libs(${ZLIB_LIBRARIES} ${PNG_LIBRARIES})
   endif()
 
   if(WITH_JPEG)
-    ios_include_3party_libs( ${JPEG_LIBRARIES} ) ## libjpeg)
+    ios_include_3party_libs(${JPEG_LIBRARIES})
   endif()
 
   add_custom_command(TARGET ${the_module} POST_BUILD
