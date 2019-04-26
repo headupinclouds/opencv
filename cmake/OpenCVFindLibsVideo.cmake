@@ -205,6 +205,7 @@ if(WITH_FFMPEG)  # try FFmpeg autodetection
       set(FFMPEG_FOUND TRUE)
       set(HAVE_FFMPEG TRUE)
       foreach(lib avformat avcodec avutil swscale swresample)
+        set(FFMPEG_lib${lib}_FOUND TRUE)
         get_target_property(
 	      ${lib}_INCLUDE_DIR
 	      ffmpeg::${lib}
