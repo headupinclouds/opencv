@@ -205,12 +205,23 @@ if(WITH_FFMPEG)  # try FFmpeg autodetection
       set(FFMPEG_FOUND TRUE)
       foreach(lib avcodec avformat avutil swresample swscale)
         get_target_property(
-          ${lib}_INCLUDE_DIR
+	      ${lib}_INCLUDE_DIR
+	      ffmpeg::${lib}
+	      INTERFACE_INCLUDE_DIRECTORIES
+	    )
+        get_target_property(
+          imported_configurations
           ffmpeg::${lib}
-          INTERFACE_INCLUDE_DIRECTORIES
+          IMPORTED_CONFIGURATIONS
+          )
+        list(GET imported_configurations 0 imported_configuration)
+        get_target_property(
+          imported_location
+          ffmpeg::${lib}
+          IMPORTED_LOCATION_${imported_configuration}
           )
         list(APPEND FFMPEG_INCLUDE_DIRS "${${lib}_INCLUDE_DIR}")
-        list(APPEND FFMPEG_LIBRARIES "ffmpeg::${lib}")
+        list(APPEND FFMPEG_LIBRARIES ${imported_location})
       endforeach()
       list(REMOVE_DUPLICATES FFMPEG_INCLUDE_DIRS)
     endif()
