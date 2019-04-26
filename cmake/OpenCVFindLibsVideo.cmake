@@ -203,6 +203,7 @@ if(WITH_FFMPEG)  # try FFmpeg autodetection
       find_package(ffmpeg CONFIG REQUIRED)
 
       set(FFMPEG_FOUND TRUE)
+      set(HAVE_FFMPEG TRUE)
       foreach(lib avcodec avformat avutil swresample swscale)
         get_target_property(
 	      ${lib}_INCLUDE_DIR
@@ -254,9 +255,10 @@ if(HAVE_FFMPEG
                   "-DLINK_LIBRARIES:STRING=${FFMPEG_LIBRARIES}"
       OUTPUT_VARIABLE TRY_OUT
   )
+
   if(NOT __VALID_FFMPEG)
     #message(FATAL_ERROR "FFMPEG: test check build log:\n${TRY_OUT}")
-    message(STATUS "WARNING: Can't build ffmpeg test code")
+    message(STATUS "WARNING: Can't build ffmpeg test code log:\n${TRY_OUT}")
     set(HAVE_FFMPEG FALSE)
   else()
     ocv_append_build_options(VIDEOIO FFMPEG)
