@@ -199,33 +199,40 @@ if(WITH_FFMPEG)  # try FFmpeg autodetection
     endif()
 
     else(HUNTER_ENABLED)
+
       hunter_add_package(ffmpeg)
       find_package(ffmpeg CONFIG REQUIRED)
 
-      set(FFMPEG_FOUND TRUE)
-      set(HAVE_FFMPEG TRUE)
-      foreach(lib avformat avcodec avutil swscale swresample)
-        set(FFMPEG_lib${lib}_FOUND TRUE)
-        get_target_property(
-	      ${lib}_INCLUDE_DIR
-	      ffmpeg::${lib}
-	      INTERFACE_INCLUDE_DIRECTORIES
-	    )
-        get_target_property(
-          imported_configurations
-          ffmpeg::${lib}
-          IMPORTED_CONFIGURATIONS
-          )
-        list(GET imported_configurations 0 imported_configuration)
-        get_target_property(
-          imported_location
-          ffmpeg::${lib}
-          IMPORTED_LOCATION_${imported_configuration}
-          )
-        list(APPEND FFMPEG_INCLUDE_DIRS "${${lib}_INCLUDE_DIR}")
-        list(APPEND FFMPEG_LIBRARIES ${imported_location})
-      endforeach()
-      list(REMOVE_DUPLICATES FFMPEG_INCLUDE_DIRS)
+      # get_cmake_property(_variableNames VARIABLES)
+      # list (SORT _variableNames)
+      # foreach (_variableName ${_variableNames})
+      #   message(STATUS "${_variableName}=${${_variableName}}")
+      # endforeach()
+
+      # set(FFMPEG_FOUND TRUE)
+      # set(HAVE_FFMPEG TRUE)
+      # foreach(lib avformat avcodec avutil swscale swresample)
+      #   set(FFMPEG_lib${lib}_FOUND TRUE)
+      #   get_target_property(
+	  #     ${lib}_INCLUDE_DIR
+	  #     PkgConfig::lib${lib}
+	  #     INTERFACE_INCLUDE_DIRECTORIES
+	  #   )
+      #   get_target_property(
+      #     imported_configurations
+      #     PkgConfig::lib${lib}
+      #     IMPORTED_CONFIGURATIONS
+      #     )
+      #   list(GET imported_configurations 0 imported_configuration)
+      #   get_target_property(
+      #     imported_location
+      #     PkgConfig::lib${lib}
+      #     IMPORTED_LOCATION_${imported_configuration}
+      #     )
+      #   list(APPEND FFMPEG_INCLUDE_DIRS "${${lib}_INCLUDE_DIR}")
+      #   list(APPEND FFMPEG_LIBRARIES ${imported_location})
+      # endforeach()
+      # list(REMOVE_DUPLICATES FFMPEG_INCLUDE_DIRS)
     endif()
   elseif(WIN32 AND NOT ARM AND NOT OPENCV_FFMPEG_SKIP_DOWNLOAD)
     include("${OpenCV_SOURCE_DIR}/3rdparty/ffmpeg/ffmpeg.cmake")
