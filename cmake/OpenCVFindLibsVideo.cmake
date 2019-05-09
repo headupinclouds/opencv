@@ -269,6 +269,11 @@ if(HAVE_FFMPEG
     message(STATUS "WARNING: Can't build ffmpeg test code log:\n${TRY_OUT}")
     set(HAVE_FFMPEG FALSE)
   else()
+
+    if(FFMPEG_PACKAGES)
+      set(FFMPEG_LIBRARIES ${FFMPEG_PACKAGES})
+    endif()
+    
     ocv_append_build_options(VIDEOIO FFMPEG)
   endif()
 endif()
